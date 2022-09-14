@@ -71,7 +71,7 @@ function findParentRouteId(routeIds, childRouteId) {
   return routeIds.find(
     (id) =>
       platformAgnosticId(id) !== childRouteId &&
-      childRouteId.startsWith(platformAgnosticId(id))
+      childRouteId.startsWith(platformAgnosticId(id) + ".")
   );
 }
 

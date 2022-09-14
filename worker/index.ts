@@ -8,27 +8,27 @@ import { createRequestHandler, type ServerBuild } from "@remix-run/cloudflare";
 import { createRoutes } from "@remix-run/server-runtime/dist/routes";
 import { matchRoutes } from "react-router";
 
+import { mergeBuilds } from "../lib/merge-builds.mjs";
+
 // Virtual module provided by wrangler
 import manifestJSON from "__STATIC_CONTENT_MANIFEST";
 // Remix build provided by remix build
 import * as remixCloudflareBuild from "remix-build/cloudflare";
-import { assets, routes } from "remix-build/browser.mjs";
+import * as remixBrowserBuild from "remix-build/browser.mjs";
 
 const assetManifest = JSON.parse(manifestJSON);
 
-const remixBuild = {
-  ...remixCloudflareBuild,
-  assets: assets,
-  routes: {
-    ...routes,
-    ...remixCloudflareBuild.routes,
-  },
-} as unknown as ServerBuild;
+const remixBuild = mergeBuilds(
+  remixBrowserBuild,
+  remixCloudflareBuild,
+  "routes/node"
+);
 const requestHandler = createRequestHandler(remixBuild, process.env.NODE_ENV);
 
 const cloudflareRoutes = createRoutes(
-  remixCloudflareBuild.routes as unknown as ServerBuild["routes"]
+  remixBuild.routes as unknown as ServerBuild["routes"]
 );
+console.log(cloudflareRoutes[0].children[0].children);
 
 function cacheControl(request: Request): Partial<CacheControl> {
   const url = new URL(request.url);
@@ -99,6 +99,7 @@ export default {
 
     const originHeaders = new Headers(response.headers);
     originHeaders.set("X-Origin", originUrl.href);
+
     return new Response(response.body, {
       status: response.status,
       statusText: response.statusText,

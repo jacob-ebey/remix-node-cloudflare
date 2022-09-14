@@ -3,6 +3,8 @@ import express from "express";
 import compression from "compression";
 import { createRequestHandler } from "@remix-run/express";
 
+import { mergeBuilds } from "../lib/merge-builds.mjs";
+
 const NODE_BUILD_PATH = path.join(process.cwd(), "build/node.js");
 const BROWSER_BUILD_PATH = path.join(process.cwd(), "build/browser.mjs");
 
@@ -14,7 +16,11 @@ if (process.env.NODE_ENV === "development") {
   app.all("*", async (req, res, next) => {
     try {
       await createRequestHandler({
-        build: await mergeBuilds(),
+        build: await mergeBuilds(
+          await import(`${BROWSER_BUILD_PATH}?${Date.now()}`),
+          await import(`${NODE_BUILD_PATH}?${Date.now()}`),
+          "routes/cloudflare"
+        ),
         mode: "development",
       })(req, res, next);
     } catch (error) {
@@ -26,7 +32,11 @@ if (process.env.NODE_ENV === "development") {
   app.all(
     "*",
     createRequestHandler({
-      build: await mergeBuilds(),
+      build: await mergeBuilds(
+        await import(`${BROWSER_BUILD_PATH}?${Date.now()}`),
+        await import(`${NODE_BUILD_PATH}?${Date.now()}`),
+        "routes/cloudflare"
+      ),
       mode: "production",
     })
   );
@@ -36,32 +46,3 @@ const port = Number(process.env.PORT || 3000);
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
-
-async function mergeBuilds() {
-  const remixNodeBuild = await import(`${NODE_BUILD_PATH}?${Date.now()}`);
-  const remixBrowserBuild = await import(`${BROWSER_BUILD_PATH}?${Date.now()}`);
-
-  const routes = {
-    ...remixBrowserBuild.routes,
-    ...remixNodeBuild.routes,
-  };
-
-  return {
-    ...remixNodeBuild,
-    assets: remixBrowserBuild.assets,
-    routes,
-  };
-}
-
-function findParentRouteId(routeIds, childRouteId) {
-  childRouteId = platformAgnosticId(childRouteId);
-  return routeIds.find(
-    (id) =>
-      platformAgnosticId(id) !== childRouteId &&
-      childRouteId.startsWith(platformAgnosticId(id))
-  );
-}
-
-function platformAgnosticId(id) {
-  return id.replace(/^routes\/(cloudflare|node|common)\//, "routes/");
-}

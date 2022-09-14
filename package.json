@@ -13,7 +13,7 @@
     "dev:remix-cloudflare": "cross-env BUILD_FOR=cloudflare remix watch",
     "dev:remix-node": "cross-env BUILD_FOR=node remix watch",
     "dev:remix-browser": "cross-env BUILD_FOR=browser remix watch",
-    "dev:cloudflare": "wrangler dev --local",
+    "dev:cloudflare": "wrangler dev --local --config wrangler.dev.toml",
     "dev:node": "cross-env NODE_ENV=development node node/index.mjs",
     "deploy": "wrangler publish",
     "start:local": "concurrently \"npm:start\" \"npm:dev:cloudflare\"",

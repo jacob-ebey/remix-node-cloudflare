@@ -1,4 +1,3 @@
-account_id = "574fdb1eae7e80782a805c4b92f6b626"
 name = "remix-examples"
 
 compatibility_date = "2022-09-14"
@@ -8,3 +7,6 @@ main = "worker/index.ts"
 
 [site]
 bucket = "./public"
+
+[vars]
+ORIGIN_URL = "http://localhost:3000"

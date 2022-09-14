@@ -1,5 +1,5 @@
 account_id = "574fdb1eae7e80782a805c4b92f6b626"
-name = "remix-examples"
+name = "remix-node-cloudflare"
 
 compatibility_date = "2022-09-14"
 compatibility_flags = ["streams_enable_constructors"]

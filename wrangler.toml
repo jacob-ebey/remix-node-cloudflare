@@ -1,0 +1,12 @@
+name = "remix-examples"
+compatibility_date = "2022-09-14"
+compatibility_flags = ["streams_enable_constructors"]
+
+main = "worker/index.ts"
+# node_compat = true
+
+[site]
+bucket = "./public"
+
+[vars]
+ORIGIN_URL = "http://localhost:3000"

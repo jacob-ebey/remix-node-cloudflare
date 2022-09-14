@@ -41,8 +41,27 @@ async function mergeBuilds() {
   const remixNodeBuild = await import(`${NODE_BUILD_PATH}?${Date.now()}`);
   const remixBrowserBuild = await import(`${BROWSER_BUILD_PATH}?${Date.now()}`);
 
+  const routes = {
+    ...remixBrowserBuild.routes,
+    ...remixNodeBuild.routes,
+  };
+
   return {
     ...remixNodeBuild,
     assets: remixBrowserBuild.assets,
+    routes,
   };
+}
+
+function findParentRouteId(routeIds, childRouteId) {
+  childRouteId = platformAgnosticId(childRouteId);
+  return routeIds.find(
+    (id) =>
+      platformAgnosticId(id) !== childRouteId &&
+      childRouteId.startsWith(platformAgnosticId(id))
+  );
+}
+
+function platformAgnosticId(id) {
+  return id.replace(/^routes\/(cloudflare|node|common)\//, "routes/");
 }

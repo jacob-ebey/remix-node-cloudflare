@@ -6,5 +6,8 @@ compatibility_flags = ["streams_enable_constructors"]
 
 main = "worker/index.ts"
 
+[define]
+"process.env.REMIX_DEV_SERVER_WS_PORT" = "8002"
+
 [site]
 bucket = "./public"

@@ -12,13 +12,17 @@ import { matchRoutes } from "react-router";
 import manifestJSON from "__STATIC_CONTENT_MANIFEST";
 // Remix build provided by remix build
 import * as remixCloudflareBuild from "remix-build/cloudflare";
-import { assets } from "remix-build/browser.mjs";
+import { assets, routes } from "remix-build/browser.mjs";
 
 const assetManifest = JSON.parse(manifestJSON);
 
 const remixBuild = {
   ...remixCloudflareBuild,
   assets: assets,
+  routes: {
+    ...routes,
+    ...remixCloudflareBuild.routes,
+  },
 } as unknown as ServerBuild;
 const requestHandler = createRequestHandler(remixBuild, process.env.NODE_ENV);
 

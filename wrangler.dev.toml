@@ -8,5 +8,8 @@ main = "worker/index.ts"
 [site]
 bucket = "./public"
 
+[define]
+"process.env.REMIX_DEV_SERVER_WS_PORT" = "8002"
+
 [vars]
 ORIGIN_URL = "http://localhost:3000"

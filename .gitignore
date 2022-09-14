@@ -176,3 +176,6 @@ dist
 # remix build
 /build
 /public/build
+
+# postgres docker
+/postgres-data

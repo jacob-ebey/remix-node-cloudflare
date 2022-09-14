@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "sideEffects": false,
   "scripts": {
-    "clean": "rimraf build public/build",
+    "clean": "rimraf build public/build app/styles.css",
     "build": "npm run clean && npm run build:styles && concurrently \"npm:build:remix-cloudflare\" \"npm:build:remix-node\" \"npm:build:remix-browser\"",
     "build:remix-cloudflare": "cross-env BUILD_FOR=cloudflare remix build",
     "build:remix-node": "cross-env BUILD_FOR=node remix build",
@@ -33,6 +33,7 @@
     }
   },
   "dependencies": {
+    "@prisma/client": "^4.3.1",
     "@remix-run/express": "^0.0.0-experimental-e18af792a",
     "@remix-run/react": "^0.0.0-experimental-e18af792a",
     "compression": "^1.7.4",
@@ -52,6 +53,7 @@
     "concurrently": "^7.4.0",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^6.0.0",
+    "prisma": "^4.3.1",
     "remix-flat-routes": "^0.4.3",
     "rimraf": "^3.0.2",
     "sass": "^1.54.9",

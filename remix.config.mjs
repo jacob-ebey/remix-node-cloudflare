@@ -6,7 +6,7 @@ if (!process.env.BUILD_FOR) {
 
 let serverBuildPath = "build/cloudflare.js";
 let assetsBuildDirectory = ".cache/build";
-let serverModuleFormat = undefined;
+let serverModuleFormat = "esm";
 let devServerPort = 8002;
 switch (process.env.BUILD_FOR) {
   case "cloudflare":
@@ -14,11 +14,10 @@ switch (process.env.BUILD_FOR) {
     break;
   case "node":
     devServerPort = 8004;
-    serverBuildPath = "build/node.js";
+    serverBuildPath = "build/node.mjs";
     break;
   case "browser":
     serverBuildPath = "build/browser.mjs";
-    serverModuleFormat = "esm";
     assetsBuildDirectory = "public/build";
     break;
 }

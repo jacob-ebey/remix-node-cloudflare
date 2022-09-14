@@ -15,7 +15,7 @@ export default function Index() {
       <h1>Welcome to Remix!</h1>
       <p>{message}</p>
       <p>
-        Go to a page rendered on the <Link to="/test">origin server</Link>.
+        Go to a page rendered on the <Link to="/counter">origin server</Link>.
       </p>
     </div>
   );

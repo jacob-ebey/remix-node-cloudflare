@@ -5,7 +5,7 @@ import { createRequestHandler } from "@remix-run/express";
 
 import { mergeBuilds } from "../lib/merge-builds.mjs";
 
-const NODE_BUILD_PATH = path.join(process.cwd(), "build/node.js");
+const NODE_BUILD_PATH = path.join(process.cwd(), "build/node.mjs");
 const BROWSER_BUILD_PATH = path.join(process.cwd(), "build/browser.mjs");
 
 const app = express();

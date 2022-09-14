@@ -1,14 +1,22 @@
-import { Link } from "@remix-run/react";
+import { json } from "#remix-server";
+import { Link, useLoaderData } from "@remix-run/react";
+
+export function loader() {
+  return json({
+    message: "This page was rendered on the edge via Cloudflare Workers.",
+  });
+}
 
 export default function Index() {
+  const { message } = useLoaderData<typeof loader>();
+
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <h1>Welcome to Remix!</h1>
-      <ul>
-        <li>
-          <Link to="/test">Node Test</Link>
-        </li>
-      </ul>
+      <p>{message}</p>
+      <p>
+        Go to a page rendered on the <Link to="/test">origin server</Link>.
+      </p>
     </div>
   );
 }

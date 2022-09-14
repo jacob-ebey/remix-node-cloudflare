@@ -1,4 +1,4 @@
-import { json } from "@remix-run/cloudflare";
+import { json } from "#remix-server";
 
 export function loader() {
   return json({

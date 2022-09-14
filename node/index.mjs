@@ -4,7 +4,7 @@ import compression from "compression";
 import { createRequestHandler } from "@remix-run/express";
 
 const NODE_BUILD_PATH = path.join(process.cwd(), "build/node.js");
-const BROWSER_BUILD_PATH = path.join(process.cwd(), "build/browser.js");
+const BROWSER_BUILD_PATH = path.join(process.cwd(), "build/browser.mjs");
 
 const app = express();
 

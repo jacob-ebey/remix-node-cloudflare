@@ -12,18 +12,18 @@ import { matchRoutes } from "react-router";
 import manifestJSON from "__STATIC_CONTENT_MANIFEST";
 // Remix build provided by remix build
 import * as remixCloudflareBuild from "remix-build/cloudflare";
-import * as remixBrowserBuild from "remix-build/browser";
+import { assets } from "remix-build/browser.mjs";
 
 const assetManifest = JSON.parse(manifestJSON);
 
 const remixBuild = {
   ...remixCloudflareBuild,
-  assets: remixBrowserBuild.assets,
-};
+  assets: assets,
+} as unknown as ServerBuild;
 const requestHandler = createRequestHandler(remixBuild, process.env.NODE_ENV);
 
 const cloudflareRoutes = createRoutes(
-  remixBuild.routes as unknown as typeof ServerBuild["routes"]
+  remixCloudflareBuild.routes as unknown as ServerBuild["routes"]
 );
 
 function cacheControl(request: Request): Partial<CacheControl> {
@@ -90,7 +90,6 @@ export default {
     originUrl.pathname = url.pathname;
     originUrl.hash = url.hash;
 
-    console.log(originUrl.href);
     const originRequest = new Request(originUrl.href, request);
     const response = await fetch(originRequest);
 

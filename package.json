@@ -2,6 +2,7 @@
   "private": true,
   "name": "remix-examples",
   "version": "0.0.0",
+  "sideEffects": false,
   "scripts": {
     "build": "concurrently \"npm:build:remix-cloudflare\" \"npm:build:remix-node\" \"npm:build:remix-browser\"",
     "build:remix-cloudflare": "cross-env BUILD_FOR=cloudflare remix build",
@@ -20,15 +21,15 @@
     "#handle-document-request": {
       "node": "./lib/handle-document-request-node.cjs",
       "default": "./lib/handle-document-request-cloudflare.tsx"
+    },
+    "#remix-server": {
+      "node": "@remix-run/node",
+      "default": "@remix-run/cloudflare"
     }
   },
   "dependencies": {
-    "@cloudflare/kv-asset-handler": "^0.2.0",
-    "@remix-run/cloudflare": "^0.0.0-experimental-e18af792a",
-    "@remix-run/dev": "^0.0.0-experimental-e18af792a",
     "@remix-run/express": "^0.0.0-experimental-e18af792a",
     "@remix-run/react": "^0.0.0-experimental-e18af792a",
-    "@remix-run/serve": "^0.0.0-experimental-e18af792a",
     "compression": "^1.7.4",
     "express": "^4.18.1",
     "isbot": "^3.5.3",
@@ -36,7 +37,11 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@cloudflare/kv-asset-handler": "^0.2.0",
     "@cloudflare/workers-types": "^3.16.0",
+    "@remix-run/cloudflare": "^0.0.0-experimental-e18af792a",
+    "@remix-run/dev": "^0.0.0-experimental-e18af792a",
+    "@remix-run/serve": "^0.0.0-experimental-e18af792a",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
     "concurrently": "^7.4.0",

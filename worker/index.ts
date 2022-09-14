@@ -28,7 +28,6 @@ const requestHandler = createRequestHandler(remixBuild, process.env.NODE_ENV);
 const cloudflareRoutes = createRoutes(
   remixBuild.routes as unknown as ServerBuild["routes"]
 );
-console.log(cloudflareRoutes[0].children[0].children);
 
 function cacheControl(request: Request): Partial<CacheControl> {
   const url = new URL(request.url);

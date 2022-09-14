@@ -1,4 +1,4 @@
-import type { MetaFunction } from "#remix-server";
+import type { LinksFunction, MetaFunction } from "#remix-server";
 import {
   Links,
   LiveReload,
@@ -7,6 +7,12 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+
+import stylesHref from "./styles.css";
+
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: stylesHref },
+];
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",

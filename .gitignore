@@ -170,6 +170,9 @@ dist
 
 .dev.vars
 
+# styles build
+/app/styles.css
+
 # remix build
 /build
 /public/build

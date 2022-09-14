@@ -9,7 +9,7 @@ export default function Test() {
   const { message } = useLoaderData<typeof loader>();
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+    <div>
       <h1>Welcome to Remix!</h1>
       <p>{message}</p>
       <p>

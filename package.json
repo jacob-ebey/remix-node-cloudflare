@@ -16,8 +16,8 @@
     "dev:cloudflare": "wrangler dev --local",
     "dev:node": "cross-env NODE_ENV=development node node/index.mjs",
     "deploy": "wrangler publish",
-    "start": "concurrently \"npm:start:node\" \"npm:dev:cloudflare\"",
-    "start:node": "cross-env NODE_ENV=production node node/index.mjs"
+    "start:local": "concurrently \"npm:start\" \"npm:dev:cloudflare\"",
+    "start": "cross-env NODE_ENV=production node node/index.mjs"
   },
   "imports": {
     "#handle-document-request": {

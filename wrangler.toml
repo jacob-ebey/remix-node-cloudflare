@@ -1,9 +1,10 @@
+account_id = "574fdb1eae7e80782a805c4b92f6b626"
 name = "remix-examples"
+
 compatibility_date = "2022-09-14"
 compatibility_flags = ["streams_enable_constructors"]
 
 main = "worker/index.ts"
-# node_compat = true
 
 [site]
 bucket = "./public"

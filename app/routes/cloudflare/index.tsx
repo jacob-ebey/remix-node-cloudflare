@@ -17,6 +17,10 @@ export default function Index() {
       <p>
         Go to a page rendered on the <Link to="/counter">origin server</Link>.
       </p>
+      <p>
+        Go to a page rendered offline in the{" "}
+        <Link to="/counter">service-worker</Link>.
+      </p>
     </div>
   );
 }

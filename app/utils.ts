@@ -11,7 +11,10 @@ export async function registerServiceWorker() {
         .route.id.startsWith("routes/service-worker")
     ) {
       globalRegistration = navigator.serviceWorker.register(
-        `/sw.js?${__remixManifest.version}`
+        `/sw.js?${__remixManifest.version}`,
+        {
+          scope: "/",
+        }
       );
     }
   }

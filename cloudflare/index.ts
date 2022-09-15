@@ -34,6 +34,13 @@ const cloudflareRoutes = createRoutes(
 
 function cacheControl(request: Request): Partial<CacheControl> {
   const url = new URL(request.url);
+  if (url.pathname === "/sw.js") {
+    return {
+      browserTTL: 0,
+      edgeTTL: 0,
+    };
+  }
+
   if (url.pathname.startsWith("/build")) {
     // Cache build files for 1 year since they have a hash in their URL
     return {

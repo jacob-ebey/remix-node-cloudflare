@@ -19,7 +19,7 @@ export default function Index() {
       </p>
       <p>
         Go to a page rendered offline in the{" "}
-        <Link to="/counter">service-worker</Link>.
+        <Link to="/offline">service-worker</Link>.
       </p>
     </div>
   );

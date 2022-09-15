@@ -179,6 +179,7 @@ dist
 # remix build
 /build
 /public/build
+/public/_assets
 
 # postgres docker
 /postgres-data

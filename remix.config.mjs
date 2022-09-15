@@ -11,6 +11,7 @@ let serverDependenciesToBundle;
 let serverBuildTarget;
 let serverModuleFormat = "esm";
 let devServerPort = 8002;
+let watchPaths;
 switch (process.env.BUILD_FOR) {
   case "node":
     devServerPort = 8003;
@@ -26,6 +27,7 @@ switch (process.env.BUILD_FOR) {
     devServerPort = 8005;
     serverBuildPath = "public/sw.js";
     server = "service-worker/index.ts";
+    watchPaths = ["build/browser.mjs"];
     break;
   case "browser":
     serverBuildPath = "build/browser.mjs";
@@ -43,6 +45,7 @@ export default {
   serverBuildTarget,
   assetsBuildDirectory,
   serverDependenciesToBundle,
+  watchPaths,
   devServerPort,
   ignoredRouteFiles: ["**/*"],
   devServerBroadcastDelay: 1000,

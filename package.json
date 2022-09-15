@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "sideEffects": false,
   "scripts": {
+    "postinstall": "patch-package",
     "clean": "rimraf build public/build app/styles.css",
     "build": "npm run clean && npm run build:styles && npm run build:remix-browser && concurrently \"npm:build:remix-service-worker\" \"npm:build:remix-cloudflare\" \"npm:build:remix-node\"",
     "build:remix-node": "cross-env BUILD_FOR=node remix build",
@@ -56,6 +57,7 @@
     "concurrently": "^7.4.0",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^6.0.0",
+    "patch-package": "^6.4.7",
     "remix-flat-routes": "^0.4.3",
     "rimraf": "^3.0.2",
     "sass": "^1.54.9",

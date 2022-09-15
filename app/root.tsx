@@ -1,4 +1,5 @@
-import type { LinksFunction, MetaFunction } from "#remix-server";
+import { type ReactNode } from "react";
+import { type LinksFunction, type MetaFunction } from "#remix-server";
 import {
   Links,
   LiveReload,
@@ -6,9 +7,14 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useCatch,
+  useHref,
+  useLocation,
+  useMatches,
 } from "@remix-run/react";
 
 import stylesHref from "./styles.css";
+import { useServiceWorker } from "./utils";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesHref },
@@ -20,7 +26,11 @@ export const meta: MetaFunction = () => ({
   viewport: "width=device-width,initial-scale=1",
 });
 
-export default function App() {
+function Document({ children }: { children: ReactNode }) {
+  const serviceWorker = useServiceWorker();
+  const location = useLocation();
+  const href = useHref(location);
+
   return (
     <html lang="en">
       <head>
@@ -46,11 +56,69 @@ export default function App() {
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body>
-        <Outlet />
+        {serviceWorker.needsUpdate && (
+          <p>
+            An app update is avaliable. <a href={href}>Reload the page.</a>
+          </p>
+        )}
+        {children}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
       </body>
     </html>
+  );
+}
+
+export default function App() {
+  return (
+    <Document>
+      <Outlet />
+    </Document>
+  );
+}
+
+function ServiceWorkerWarnring() {
+  const matches = useMatches();
+  const serviceWorker = useServiceWorker();
+  const location = useLocation();
+  const href = useHref(location);
+
+  const isServiceWorkerRoute =
+    matches &&
+    matches.length > 0 &&
+    matches.slice(-1)[0].id.startsWith("routes/service-worker");
+
+  return !isServiceWorkerRoute ? null : serviceWorker.state ===
+    "unsupported" ? (
+    <p>Your browser does not support service workers. Try another browser.</p>
+  ) : (
+    <p>
+      Looks like this is your first visit or your application is out of date.
+      Try <a href={href}>reloading the page.</a>
+    </p>
+  );
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+  return (
+    <Document>
+      <h1>Oops</h1>
+      <p>Something went wrong</p>
+      <ServiceWorkerWarnring />
+    </Document>
+  );
+}
+
+export function CatchBoundary() {
+  const { status, statusText } = useCatch();
+
+  return (
+    <Document>
+      <h1>Oops {status}</h1>
+      {statusText && <p>{statusText}</p>}
+      <ServiceWorkerWarnring />
+    </Document>
   );
 }

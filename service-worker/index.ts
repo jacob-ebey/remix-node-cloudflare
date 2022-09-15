@@ -28,30 +28,12 @@ const serviceWorkerRoutes = createRoutes(
   remixServiceWorkerBuild.routes as unknown as ServerBuild["routes"]
 );
 
-async function handleRequest(event: FetchEvent) {
-  const request = event.request;
-
-  try {
-    return await remixRequestHandler(request.clone());
-  } catch (error) {
-    console.error(error);
-  }
-
-  return fetch(request);
-}
-
-self.addEventListener("install", () => {
-  (self as any).skipWaiting();
-});
-
-self.addEventListener("fetch", (event: FetchEvent) => {
+addEventListener("fetch", ((event: FetchEvent) => {
   const url = new URL(event.request.url);
   const matches = matchRoutes(serviceWorkerRoutes as any, url.pathname);
   if (matches && matches.length > 1) {
-    event.respondWith(handleRequest(event));
-  } else {
-    return;
+    event.respondWith(remixRequestHandler(event.request));
   }
-});
+}) as any);
 
 export {};

@@ -4,18 +4,12 @@ import { useMatches } from "@remix-run/react";
 let globalRegistration: Promise<ServiceWorkerRegistration | undefined>;
 export async function registerServiceWorker() {
   if (!globalRegistration) {
-    if (
-      "serviceWorker" in navigator &&
-      !__remixContext.matches
-        .slice(-1)[0]
-        .route.id.startsWith("routes/service-worker")
-    ) {
-      globalRegistration = navigator.serviceWorker.register(
-        `/sw.js?${__remixManifest.version}`,
-        {
+    if ("serviceWorker" in navigator) {
+      globalRegistration = navigator.serviceWorker
+        .register(`/sw.js`, {
           scope: "/",
-        }
-      );
+        })
+        .then((r) => r.update().then(() => r));
     }
   }
 
@@ -42,16 +36,7 @@ export function useServiceWorker() {
   useEffect(() => {
     let canceled = false;
 
-    if (
-      __remixContext.matches &&
-      __remixContext.matches.length > 0 &&
-      __remixContext.matches
-        .slice(-1)[0]
-        .route.id.startsWith("routes/service-worker")
-    ) {
-      setState("unsupported");
-      return;
-    } else if ("serviceWorker" in navigator && !isServiceWorkerRoute) {
+    if ("serviceWorker" in navigator) {
       setState("installing");
       registerServiceWorker()
         .then((registration) => {
@@ -83,7 +68,7 @@ export function useServiceWorker() {
         .catch((error) => {
           console.error("Error during service worker registration:", error);
         });
-    } else {
+    } else if (!isServiceWorkerRoute) {
       setState("unsupported");
     }
 

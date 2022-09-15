@@ -29,7 +29,6 @@ function Document({ children }: { children: ReactNode }) {
   const serviceWorker = useServiceWorker();
   const location = useLocation();
   const href = useHref(location);
-  const isServiceWorkerRoute = useIsServiceWorkerRoute();
 
   return (
     <html lang="en">
@@ -56,7 +55,7 @@ function Document({ children }: { children: ReactNode }) {
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body>
-        {!isServiceWorkerRoute && serviceWorker.needsUpdate && (
+        {serviceWorker.needsUpdate && (
           <p>
             An app update is avaliable. <a href={href}>Reload the page.</a>
           </p>
@@ -82,6 +81,8 @@ function ServiceWorkerWarnring() {
   const serviceWorker = useServiceWorker();
   const location = useLocation();
   const href = useHref(location);
+
+  console.log(serviceWorker);
 
   const isServiceWorkerRoute = useIsServiceWorkerRoute();
 

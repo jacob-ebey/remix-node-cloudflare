@@ -28,6 +28,10 @@ const serviceWorkerRoutes = createRoutes(
   remixServiceWorkerBuild.routes as unknown as ServerBuild["routes"]
 );
 
+self.addEventListener("install", (event) => {
+  (self as any).skipWaiting();
+});
+
 addEventListener("fetch", ((event: FetchEvent) => {
   const url = new URL(event.request.url);
   const matches = matchRoutes(serviceWorkerRoutes as any, url.pathname);

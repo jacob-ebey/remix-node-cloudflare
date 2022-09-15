@@ -59,7 +59,14 @@ export function useServiceWorker() {
           }
 
           const updateFoundHandler = () => {
-            if (canceled) {
+            if (
+              canceled ||
+              (__remixContext.matches &&
+                __remixContext.matches.length > 0 &&
+                __remixContext.matches
+                  .slice(-1)[0]
+                  .route.id.startsWith("routes/service-worker"))
+            ) {
               registration.removeEventListener(
                 "updatefound",
                 updateFoundHandler

@@ -7,7 +7,7 @@ export function loader() {
   });
 }
 
-export default function Index() {
+export default function Offline() {
   const { message } = useLoaderData<typeof loader>();
 
   return (

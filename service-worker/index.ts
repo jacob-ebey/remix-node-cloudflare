@@ -36,7 +36,7 @@ addEventListener("fetch", ((event: FetchEvent) => {
   const url = new URL(event.request.url);
   const matches = matchRoutes(serviceWorkerRoutes as any, url.pathname);
   if (matches && matches.length > 1) {
-    event.respondWith(remixRequestHandler(event.request));
+    event.respondWith(remixRequestHandler(event.request.clone()));
   }
 }) as any);
 

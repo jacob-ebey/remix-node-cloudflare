@@ -2,6 +2,7 @@
   "include": ["**/*.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
     "lib": ["WebWorker", "DOM", "DOM.Iterable", "ES2019"],
+    "module": "ESNext",
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",

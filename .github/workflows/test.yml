@@ -1,0 +1,16 @@
+name: 🔍 Test
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: 🔍 Test
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 📥 Install deps
+        uses: bahmutov/npm-install@v1
+
+      - name: 🔍 Unit Tests
+        run: npm run test

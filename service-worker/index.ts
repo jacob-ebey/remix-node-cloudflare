@@ -25,17 +25,27 @@ const remixRequestHandler = createRequestHandler(
 );
 
 const serviceWorkerRoutes = createRoutes(
-  remixServiceWorkerBuild.routes as unknown as ServerBuild["routes"]
+  remixBuild.routes as unknown as ServerBuild["routes"]
 );
 
-self.addEventListener("install", (event) => {
-  (self as any).skipWaiting();
+addEventListener("install", (event) => {
+  // @ts-ignore
+  skipWaiting();
 });
 
 addEventListener("fetch", ((event: FetchEvent) => {
+  // console.log({
+  //   remixBrowserBuild: JSON.stringify(remixBrowserBuild),
+  //   remixServiceWorkerBuild: JSON.stringify(remixServiceWorkerBuild),
+  // });
   const url = new URL(event.request.url);
   const matches = matchRoutes(serviceWorkerRoutes as any, url.pathname);
-  if (matches && matches.length > 1) {
+
+  if (
+    matches &&
+    matches.length > 1 &&
+    matches.slice(-1)[0].route.id?.startsWith("routes/service-worker/")
+  ) {
     event.respondWith(remixRequestHandler(event.request.clone()));
   }
 }) as any);

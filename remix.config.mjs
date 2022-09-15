@@ -1,5 +1,7 @@
 import flatRoutes from "remix-flat-routes";
 
+import { findParentRouteId } from "./lib/merge-builds.mjs";
+
 if (!process.env.BUILD_FOR) {
   throw new Error("BUILD_FOR must be set");
 }
@@ -83,17 +85,4 @@ function allRoutes(defineRoutes) {
   }
 
   return routes;
-}
-
-function findParentRouteId(routeIds, childRouteId) {
-  childRouteId = platformAgnosticId(childRouteId);
-  return routeIds.find(
-    (id) =>
-      platformAgnosticId(id) !== childRouteId &&
-      childRouteId.startsWith(platformAgnosticId(id) + ".")
-  );
-}
-
-function platformAgnosticId(id) {
-  return id.replace(/^routes\/(cloudflare|node|common)\//, "routes/");
 }

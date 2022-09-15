@@ -68,7 +68,7 @@ export default {
       );
     } catch (e) {
       if (e instanceof NotFoundError || e instanceof MethodNotAllowedError) {
-        // fall through to the remix handler if not found
+        // fall through to the remix handler
       } else {
         return new Response("An unexpected error occurred", { status: 500 });
       }

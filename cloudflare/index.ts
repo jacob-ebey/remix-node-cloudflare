@@ -13,15 +13,18 @@ import { mergeBuilds } from "../lib/merge-builds.mjs";
 // Virtual module provided by wrangler
 import manifestJSON from "__STATIC_CONTENT_MANIFEST";
 // Remix build provided by remix build
-import * as remixCloudflareBuild from "remix-build/cloudflare";
-import * as remixBrowserBuild from "remix-build/browser.mjs";
+import * as remixCloudflareBuild from "#remix-build/cloudflare.mjs";
+import * as remixBrowserBuild from "#remix-build/browser.mjs";
 
 const assetManifest = JSON.parse(manifestJSON);
 
 const remixBuild = mergeBuilds(
   remixBrowserBuild,
   remixCloudflareBuild,
-  "routes/node"
+  (e: string[]) =>
+    e[0] === "root" ||
+    e[0].startsWith("routes/cloudflare") ||
+    e[0].startsWith("routes/common")
 );
 const requestHandler = createRequestHandler(remixBuild, process.env.NODE_ENV);
 
@@ -89,7 +92,6 @@ export default {
     const originUrl = new URL(env.ORIGIN_URL);
     originUrl.search = url.search;
     originUrl.pathname = url.pathname;
-    originUrl.hash = url.hash;
 
     const originRequest = new Request(originUrl.href, request);
     const response = await fetch(originRequest);

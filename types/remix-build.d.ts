@@ -1,4 +1,4 @@
-declare module "remix-build/*" {
+declare module "#remix-build/*" {
   import { ServerBuild } from "@remix-run/cloudflare";
 
   export const assets: ServerBuild["assets"];

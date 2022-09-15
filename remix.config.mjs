@@ -4,29 +4,45 @@ if (!process.env.BUILD_FOR) {
   throw new Error("BUILD_FOR must be set");
 }
 
-let serverBuildPath = "build/cloudflare.js";
-let assetsBuildDirectory = ".cache/build";
+let server;
+let serverBuildPath;
+let assetsBuildDirectory = ".cache/build/" + process.env.BUILD_FOR;
+let serverDependenciesToBundle;
+let serverBuildTarget;
 let serverModuleFormat = "esm";
 let devServerPort = 8002;
 switch (process.env.BUILD_FOR) {
-  case "cloudflare":
-    devServerPort = 8003;
-    break;
   case "node":
-    devServerPort = 8004;
+    devServerPort = 8003;
     serverBuildPath = "build/node.mjs";
+    break;
+  case "cloudflare":
+    devServerPort = 8004;
+    serverBuildPath = "build/cloudflare.mjs";
+    break;
+  case "service-worker":
+    serverBuildTarget = "cloudflare-workers";
+    serverDependenciesToBundle = [/.*/];
+    devServerPort = 8005;
+    serverBuildPath = "public/sw.js";
+    server = "service-worker/index.ts";
     break;
   case "browser":
     serverBuildPath = "build/browser.mjs";
     assetsBuildDirectory = "public/build";
     break;
+  default:
+    throw new Error(`Unknown BUILD_FOR: ${process.env.BUILD_FOR}`);
 }
 
 /** @type {import("@remix-run/dev").AppConfig} */
 export default {
+  server,
   serverBuildPath,
   serverModuleFormat,
+  serverBuildTarget,
   assetsBuildDirectory,
+  serverDependenciesToBundle,
   devServerPort,
   ignoredRouteFiles: ["**/*"],
   devServerBroadcastDelay: 1000,
@@ -45,6 +61,7 @@ export default {
 function allRoutes(defineRoutes) {
   const routes = {
     ...flatRoutes.flatRoutes(`routes/common`, defineRoutes),
+    ...flatRoutes.flatRoutes(`routes/service-worker`, defineRoutes),
     ...flatRoutes.flatRoutes(`routes/cloudflare`, defineRoutes),
     ...flatRoutes.flatRoutes(`routes/node`, defineRoutes),
   };

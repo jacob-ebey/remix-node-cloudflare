@@ -173,6 +173,9 @@ dist
 # styles build
 /app/styles.css
 
+# service-worker build
+/public/sw.js*
+
 # remix build
 /build
 /public/build

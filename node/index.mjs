@@ -19,7 +19,10 @@ if (process.env.NODE_ENV === "development") {
         build: await mergeBuilds(
           await import(`${BROWSER_BUILD_PATH}?${Date.now()}`),
           await import(`${NODE_BUILD_PATH}?${Date.now()}`),
-          "routes/cloudflare"
+          (e) =>
+            e[0] === "root" ||
+            e[0].startsWith("routes/node") ||
+            e[0].startsWith("routes/common")
         ),
         mode: "development",
       })(req, res, next);
@@ -35,7 +38,10 @@ if (process.env.NODE_ENV === "development") {
       build: await mergeBuilds(
         await import(`${BROWSER_BUILD_PATH}?${Date.now()}`),
         await import(`${NODE_BUILD_PATH}?${Date.now()}`),
-        "routes/cloudflare"
+        (e) =>
+          e[0] === "root" ||
+          e[0].startsWith("routes/node") ||
+          e[0].startsWith("routes/common")
       ),
       mode: "production",
     })

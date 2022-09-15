@@ -10,11 +10,10 @@ import {
   useCatch,
   useHref,
   useLocation,
-  useMatches,
 } from "@remix-run/react";
 
 import stylesHref from "./styles.css";
-import { useServiceWorker } from "./utils";
+import { useIsServiceWorkerRoute, useServiceWorker } from "./utils";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesHref },
@@ -30,6 +29,7 @@ function Document({ children }: { children: ReactNode }) {
   const serviceWorker = useServiceWorker();
   const location = useLocation();
   const href = useHref(location);
+  const isServiceWorkerRoute = useIsServiceWorkerRoute();
 
   return (
     <html lang="en">
@@ -56,7 +56,7 @@ function Document({ children }: { children: ReactNode }) {
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body>
-        {serviceWorker.needsUpdate && (
+        {!isServiceWorkerRoute && serviceWorker.needsUpdate && (
           <p>
             An app update is avaliable. <a href={href}>Reload the page.</a>
           </p>
@@ -79,15 +79,11 @@ export default function App() {
 }
 
 function ServiceWorkerWarnring() {
-  const matches = useMatches();
   const serviceWorker = useServiceWorker();
   const location = useLocation();
   const href = useHref(location);
 
-  const isServiceWorkerRoute =
-    matches &&
-    matches.length > 0 &&
-    matches.slice(-1)[0].id.startsWith("routes/service-worker");
+  const isServiceWorkerRoute = useIsServiceWorkerRoute();
 
   return !isServiceWorkerRoute ? null : serviceWorker.state ===
     "unsupported" ? (

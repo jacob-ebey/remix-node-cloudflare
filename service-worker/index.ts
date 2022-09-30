@@ -10,6 +10,8 @@ import * as remixBrowserBuild from "#remix-build/browser.mjs";
 
 import { mergeBuilds } from "../lib/merge-builds.mjs";
 
+const sw = self as unknown as ServiceWorkerGlobalScope;
+
 const remixBuild = mergeBuilds(
   remixBrowserBuild,
   remixServiceWorkerBuild,
@@ -28,16 +30,15 @@ const serviceWorkerRoutes = createRoutes(
   remixBuild.routes as unknown as ServerBuild["routes"]
 );
 
-addEventListener("install", (event) => {
-  // @ts-ignore
-  skipWaiting();
+sw.addEventListener("install", (event) => {
+  sw.skipWaiting();
 });
 
-addEventListener("fetch", ((event: FetchEvent) => {
-  // console.log({
-  //   remixBrowserBuild: JSON.stringify(remixBrowserBuild),
-  //   remixServiceWorkerBuild: JSON.stringify(remixServiceWorkerBuild),
-  // });
+sw.addEventListener("activate", async () => {
+  await sw.clients.claim();
+});
+
+sw.addEventListener("fetch", ((event: FetchEvent) => {
   const url = new URL(event.request.url);
   const matches = matchRoutes(serviceWorkerRoutes as any, url.pathname);
 

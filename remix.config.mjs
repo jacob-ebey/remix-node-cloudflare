@@ -52,7 +52,10 @@ export default {
   ignoredRouteFiles: ["**/*"],
   devServerBroadcastDelay: 1000,
   routes: async (defineRoutes) => {
-    if (process.env.BUILD_FOR === "browser") {
+    if (
+      process.env.BUILD_FOR === "browser" ||
+      process.env.BUILD_FOR === "node-browser"
+    ) {
       return allRoutes(defineRoutes);
     }
 

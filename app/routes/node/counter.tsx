@@ -33,9 +33,6 @@ export default function Counter() {
           <button disabled={transition.state !== "idle"}>Increment</button>
         </p>
       </Form>
-      <p>
-        Go back <Link to="/">Home</Link>.
-      </p>
     </div>
   );
 }

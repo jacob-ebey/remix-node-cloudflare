@@ -12,8 +12,9 @@ import {
   useHref,
   useLocation,
 } from "@remix-run/react";
+import useServiceWorker from "#use-service-worker";
 
-import { useIsServiceWorkerRoute, useServiceWorker } from "./utils";
+import { useIsServiceWorkerRoute } from "./utils";
 
 export const links: LinksFunction = () => [
   {
@@ -59,12 +60,12 @@ function Document({ children }: { children: ReactNode }) {
       </head>
       <body>
         <header>
-          {serviceWorker.needsUpdate && (
+          {serviceWorker.serviceWorkerStatus === "updates" && (
             <p>
               An app update is avaliable. <a href={href}>Reload the page.</a>
             </p>
           )}
-          <h1>remix-node-cloudflare-webworker</h1>
+          <h1>remix-node-cloudflare-serviceworker</h1>
           <nav>
             <Link to="/">Home</Link> / <Link to="/layout">Layout</Link>
             {" / "}
@@ -72,7 +73,7 @@ function Document({ children }: { children: ReactNode }) {
             {" / "}
             <Link to="layout/cf">Cloudflare</Link>
             {" / "}
-            <Link to="layout/offline">WebWorker</Link>
+            <Link to="layout/offline">Service Worker</Link>
             {" / "}
             <Link to="counter">PostgreSQL Counter</Link>
             {" / "}
@@ -105,8 +106,8 @@ function ServiceWorkerWarnring() {
 
   const isServiceWorkerRoute = useIsServiceWorkerRoute();
 
-  return !isServiceWorkerRoute ? null : serviceWorker.state ===
-    "unsupported" ? (
+  return !isServiceWorkerRoute ? null : serviceWorker.serviceWorkerStatus ===
+    "error" ? (
     <p>Your browser does not support service workers. Try another browser.</p>
   ) : (
     <p>

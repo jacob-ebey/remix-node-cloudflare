@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
-      "#remix-build/*": ["./build/*"]
+      "#remix-build/*": ["./build/*"],
+      "#use-service-worker": ["./lib/use-service-worker.d.ts"]
     },
 
     // Remix takes care of building everything in `./app` with `remix build`.

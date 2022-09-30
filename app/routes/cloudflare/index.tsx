@@ -18,7 +18,7 @@ export default function Index() {
         Go to a page rendered on the <Link to="counter">origin server</Link>.
       </p>
       <p>
-        Go to an app rendered offline in the <Link to="notes">WebWorker</Link>.
+        Go to an app rendered offline in the <Link to="notes">Service Worker</Link>.
       </p>
     </div>
   );

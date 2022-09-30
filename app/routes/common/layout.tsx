@@ -5,7 +5,7 @@ export default function Layout() {
 
   return (
     <main>
-      <h1>I'm the common layout, but...</h1>
+      <h1>I'm the common layout, but..</h1>
       {outlet ? (
         outlet
       ) : (

@@ -67,14 +67,18 @@ function Document({ children }: { children: ReactNode }) {
           )}
           <h1>remix-node-cloudflare-serviceworker</h1>
           <nav>
-            <Link to="/">Home</Link> / <Link to="/layout">Layout</Link>
+            <Link to="/">Home</Link>
+          </nav>
+          <nav>
+            <Link to="/layout">Layout</Link>
             {" / "}
             <Link to="layout/node">Node</Link>
             {" / "}
             <Link to="layout/cf">Cloudflare</Link>
             {" / "}
             <Link to="layout/offline">Service Worker</Link>
-            {" / "}
+          </nav>
+          <nav>
             <Link to="counter">PostgreSQL Counter</Link>
             {" / "}
             <Link to="notes">Offline Notes</Link>
@@ -102,8 +106,6 @@ function ServiceWorkerWarnring() {
   const location = useLocation();
   const href = useHref(location);
 
-  console.log(serviceWorker);
-
   const isServiceWorkerRoute = useIsServiceWorkerRoute();
 
   return !isServiceWorkerRoute ? null : serviceWorker.serviceWorkerStatus ===
@@ -112,7 +114,10 @@ function ServiceWorkerWarnring() {
   ) : (
     <p>
       Looks like this is your first visit or your application is out of date.
-      Try <a href={href}>reloading the page.</a>
+      Try{" "}
+      <Link replace to={href}>
+        reloading the page.
+      </Link>
     </p>
   );
 }

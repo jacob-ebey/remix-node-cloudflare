@@ -26,7 +26,7 @@ export default function Counter() {
 
   return (
     <div>
-      <h1>Welcome to Remix!</h1>
+      <h1>PostgreSQL Counter</h1>
       <p>Count: {count} (read from posgress)</p>
       <Form method="post">
         <p>

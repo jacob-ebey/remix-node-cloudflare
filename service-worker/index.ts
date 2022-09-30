@@ -10,8 +10,6 @@ import * as remixBrowserBuild from "#remix-build/browser.mjs";
 
 import { mergeBuilds } from "../lib/merge-builds.mjs";
 
-const sw = self as unknown as ServiceWorkerGlobalScope;
-
 const remixBuild = mergeBuilds(
   remixBrowserBuild,
   remixServiceWorkerBuild,
@@ -30,12 +28,16 @@ const serviceWorkerRoutes = createRoutes(
   remixBuild.routes as unknown as ServerBuild["routes"]
 );
 
-sw.addEventListener("install", (event) => {
-  sw.skipWaiting();
+let sw = self as unknown as ServiceWorkerGlobalScope;
+let skipPromise: Promise<void> | null = null;
+sw.addEventListener("install", () => {
+  skipPromise = sw.skipWaiting();
 });
 
-sw.addEventListener("activate", async () => {
-  await sw.clients.claim();
+sw.addEventListener("activate", (event) => {
+  sw = self as unknown as ServiceWorkerGlobalScope;
+  event.waitUntil(Promise.resolve(skipPromise));
+  event.waitUntil(sw.clients.claim());
 });
 
 sw.addEventListener("fetch", ((event: FetchEvent) => {
@@ -47,7 +49,21 @@ sw.addEventListener("fetch", ((event: FetchEvent) => {
     matches.length > 1 &&
     matches.slice(-1)[0].route.id?.startsWith("routes/service-worker/")
   ) {
-    event.respondWith(remixRequestHandler(event.request));
+    let timeoutPromiseForSafariWorkaroundBecauseIDoNotKnowWhatIAmDoingInServiceWorkers =
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), 500));
+    event.respondWith(
+      Promise.race([
+        timeoutPromiseForSafariWorkaroundBecauseIDoNotKnowWhatIAmDoingInServiceWorkers,
+        remixRequestHandler(event.request.clone()),
+      ]).then((response) => {
+        if (!response) {
+          return fetch(event.request);
+        }
+        return response;
+      })
+    );
+  } else {
+    event.respondWith(fetch(event.request));
   }
 }) as any);
 

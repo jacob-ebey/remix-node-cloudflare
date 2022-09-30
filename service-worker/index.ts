@@ -46,7 +46,7 @@ addEventListener("fetch", ((event: FetchEvent) => {
     matches.length > 1 &&
     matches.slice(-1)[0].route.id?.startsWith("routes/service-worker/")
   ) {
-    event.respondWith(remixRequestHandler(event.request.clone()));
+    event.respondWith(remixRequestHandler(event.request));
   }
 }) as any);
 

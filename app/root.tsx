@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import { type LinksFunction, type MetaFunction } from "#remix-server";
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -12,11 +13,13 @@ import {
   useLocation,
 } from "@remix-run/react";
 
-import stylesHref from "./styles.css";
 import { useIsServiceWorkerRoute, useServiceWorker } from "./utils";
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesHref },
+  {
+    rel: "stylesheet",
+    href: "https://unpkg.com/@exampledev/new.css@1.1.3/new.css",
+  },
 ];
 
 export const meta: MetaFunction = () => ({
@@ -55,11 +58,27 @@ function Document({ children }: { children: ReactNode }) {
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body>
-        {serviceWorker.needsUpdate && (
-          <p>
-            An app update is avaliable. <a href={href}>Reload the page.</a>
-          </p>
-        )}
+        <header>
+          {serviceWorker.needsUpdate && (
+            <p>
+              An app update is avaliable. <a href={href}>Reload the page.</a>
+            </p>
+          )}
+          <h1>remix-node-cloudflare-webworker</h1>
+          <nav>
+            <Link to="/">Home</Link> / <Link to="/layout">Layout</Link>
+            {" / "}
+            <Link to="layout/node">Node</Link>
+            {" / "}
+            <Link to="layout/cf">Cloudflare</Link>
+            {" / "}
+            <Link to="layout/offline">WebWorker</Link>
+            {" / "}
+            <Link to="counter">PostgreSQL Counter</Link>
+            {" / "}
+            <Link to="notes">Offline Notes</Link>
+          </nav>
+        </header>
         {children}
         <ScrollRestoration />
         <Scripts />

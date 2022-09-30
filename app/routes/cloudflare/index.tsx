@@ -15,11 +15,10 @@ export default function Index() {
       <h1>Welcome to Remix!</h1>
       <p>{message}</p>
       <p>
-        Go to a page rendered on the <Link to="/counter">origin server</Link>.
+        Go to a page rendered on the <Link to="counter">origin server</Link>.
       </p>
       <p>
-        Go to a page rendered offline in the{" "}
-        <Link to="/offline">service-worker</Link>.
+        Go to an app rendered offline in the <Link to="notes">WebWorker</Link>.
       </p>
     </div>
   );

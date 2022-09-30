@@ -1,0 +1,20 @@
+diff --git a/node_modules/@remix-run/server-runtime/dist/esm/data.js b/node_modules/@remix-run/server-runtime/dist/esm/data.js
+index a2200f6..6fb6661 100644
+--- a/node_modules/@remix-run/server-runtime/dist/esm/data.js
++++ b/node_modules/@remix-run/server-runtime/dist/esm/data.js
+@@ -96,6 +96,7 @@ async function callRouteLoader({
+ }
+ 
+ function stripIndexParam(request) {
++  return request;
+   let url = new URL(request.url);
+   let indexValues = url.searchParams.getAll("index");
+   url.searchParams.delete("index");
+@@ -115,6 +116,7 @@ function stripIndexParam(request) {
+ }
+ 
+ function stripDataParam(request) {
++  return request;
+   let url = new URL(request.url);
+   url.searchParams.delete("_data");
+   return new Request(url.href, request);

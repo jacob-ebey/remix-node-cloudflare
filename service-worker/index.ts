@@ -62,8 +62,6 @@ sw.addEventListener("fetch", ((event: FetchEvent) => {
         return response;
       })
     );
-  } else {
-    event.respondWith(fetch(event.request));
   }
 }) as any);
 

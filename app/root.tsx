@@ -113,8 +113,8 @@ function ServiceWorkerWarnring() {
     <p>Your browser does not support service workers. Try another browser.</p>
   ) : (
     <p>
-      Looks like this is your first visit or your application is out of date.
-      Try{" "}
+      Looks like this is your first visit, or your application is out of date,
+      or you're using Safari. Try{" "}
       <Link replace to={href}>
         reloading the page.
       </Link>

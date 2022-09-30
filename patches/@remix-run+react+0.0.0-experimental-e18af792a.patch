@@ -11,6 +11,32 @@ index 4b170d9..808277f 100644
        let routeMeta = typeof routeModule.meta === "function" ? routeModule.meta({
          data,
          parentsData,
+diff --git a/node_modules/@remix-run/react/dist/esm/components.js b/node_modules/@remix-run/react/dist/esm/components.js
+index b7baffe..c315058 100644
+--- a/node_modules/@remix-run/react/dist/esm/components.js
++++ b/node_modules/@remix-run/react/dist/esm/components.js
+@@ -695,7 +695,7 @@ function Meta() {
+     let params = match.params;
+     let routeModule = routeModules[routeId];
+ 
+-    if (routeModule.meta) {
++    if (routeModule && routeModule.meta) {
+       let routeMeta = typeof routeModule.meta === "function" ? routeModule.meta({
+         data,
+         parentsData,
+diff --git a/node_modules/@remix-run/react/dist/esm/links.js b/node_modules/@remix-run/react/dist/esm/links.js
+index 4a47dd3..ecfd8d0 100644
+--- a/node_modules/@remix-run/react/dist/esm/links.js
++++ b/node_modules/@remix-run/react/dist/esm/links.js
+@@ -23,7 +23,7 @@ function getLinksForMatches(matches, routeModules, manifest) {
+     var _module$links;
+ 
+     let module = routeModules[match.route.id];
+-    return ((_module$links = module.links) === null || _module$links === void 0 ? void 0 : _module$links.call(module)) || [];
++    return ((_module$links = module && module.links) === null || _module$links === void 0 ? void 0 : _module$links.call(module)) || [];
+   }).flat(1);
+   let preloads = getCurrentPageModulePreloadHrefs(matches, manifest);
+   return dedupe(descriptors, preloads);
 diff --git a/node_modules/@remix-run/react/dist/links.js b/node_modules/@remix-run/react/dist/links.js
 index a4890c5..60ed120 100644
 --- a/node_modules/@remix-run/react/dist/links.js

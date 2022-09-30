@@ -31,6 +31,9 @@ const requestHandler = createRequestHandler(remixBuild, process.env.NODE_ENV);
 const cloudflareRoutes = createRoutes(
   remixBuild.routes as unknown as ServerBuild["routes"]
 );
+const browserRoutes = createRoutes(
+  remixBrowserBuild.routes as unknown as ServerBuild["routes"]
+);
 
 function cacheControl(request: Request): Partial<CacheControl> {
   const url = new URL(request.url);
@@ -87,8 +90,13 @@ export default {
     const url = new URL(request.url);
 
     try {
-      const matches = matchRoutes(cloudflareRoutes as any, url.pathname);
-      if (matches) {
+      const matches = matchRoutes(cloudflareRoutes, url.pathname);
+      if (
+        matches ||
+        matchRoutes(browserRoutes, url.pathname)
+          ?.slice(-1)[0]
+          ?.route.id.startsWith("routes/service-worker")
+      ) {
         return await requestHandler(request, { env, ctx });
       }
     } catch (error) {
